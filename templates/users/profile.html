@@ -1,0 +1,91 @@
+{% extends "feed/layout.html" %} {% load static %} 
+{% comment %}
+<!-- 
+    This is probably the most complicated one which has lots of stuff going in. 
+    First, we can see the {% block searchform %} which has a search bar to search for users. 
+    It is displayed in the navbar of the website and is not a part of the profile.html. 
+    It is just extending the navbar part so that the search form does not display on each page.
+    
+    Now, coming to the profile part, we can search first we have a card which displays our profile details 
+    such as profile pic, the number of friends and number of posts shared.
+    Now we have placed a restriction for only the user whose profile we are looking at can view the friends' list and not anyone else. 
+    The posts shared can be seen by anyone. 
+    So, we have put a check there ( {% if request.user == u%}) which checks for is current user equal to the user whose profile is being viewed.
+    
+    Now, next, we have an option of Edit Profile if the current user is the user whose profile is being viewed. 
+    This restricts anyone else to update our profile.
+    
+    We also have various options such as 
+    Add Friend, Cancel Request, Reject Request, Accept Request, Unfriend depending on the conditions.
+    
+    Add Friend — If a user is not our friend, we can send him a friend request.
+    Cancel Request — If we have already sent a request to the user, we can cancel it.
+    Accept Request — If that user has sent us a friend request, we can accept it.
+    Reject Request — If that user has sent us a friend request, we can also reject it.
+    Unfriend — If the user is already our friend and we want to remove him from our friends, we can unfriend him.
+    
+    If the current user is the user whose profile is being viewed, then we get two lists below.
+    Sent friend requests — It contains all the users whom we have sent a request. We can cancel the request from there.
+    Received friend requests — It contains all the requests we have received. We can accept or reject them.
+ -->
+
+ {% endcomment %}
+
+{% block cssfiles %} {% endblock cssfiles %} 
+
+{% block searchform %}
+<form class="form-inline my-2 my-lg-0 ml-5" action="{% url 'search_users' %}" method="get">
+    <input name="q" type="text" placeholder="Search users.." />
+    <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+        Search
+    </button>
+</form>
+{% endblock searchform %} 
+
+{% block content %}
+<div class="main-content">
+    <div class="container mt-7">
+        <div class="row">
+            <div class="col-xl-8 m-auto order-xl-2 mb-5 mb-xl-0">
+                <div class="card card-profile shadow">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 order-lg-2">
+                            <div class="card-profile-image">
+                                <a href="{{ u.profile.image.url }}">
+                                    <img src="{{ u.profile.image.url }}" class="rounded-circle" width="160px"
+                                        height="160px" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"></div>
+                    <div class="card-body pt-0 pt-md-4">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                                    <div>
+                                        <span class="heading">{{ post_count }}</span>
+                                        <span class="description"><a
+                                                href="{% url 'user-posts' u.username %}">Posts</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h3>{{ u }}</h3>
+                            <p>{{ u.profile.bio }}</p>
+                            <hr class="my-2" />
+                            {% if request.user == u %}
+                            <a class="btn btn-info" href="{% url 'edit_profile' %}">Edit Profile</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+{% endblock content %} 
+
+{% block jsfiles %}{% endblock jsfiles %}
