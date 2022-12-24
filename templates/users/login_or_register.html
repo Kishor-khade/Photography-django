@@ -1,0 +1,141 @@
+<!-- 
+This template will let users sign in into our website. 
+This displays the Login Form and we are using the crispy forms to stylize our forms using Bootstrap4. 
+In Django, forms are very easy to render.
+
+We have a submit button and forgot password option, 
+Also, we have a link to the registration page.
+
+We are extending the layout template from our Feeds app. 
+Each template extends the layout which contains the header and footer part. 
+Don’t worry for now about the layout.html file since we would cover it in Part 5 of the tutorial series.
+ -->
+
+
+{% extends "feed/layout.html" %} {% load static %} {% load crispy_forms_tags %}
+{% block cssfiles %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+</style>
+{% endblock cssfiles %}
+{% block content %}
+<div>
+    {% if messages %}
+    <ul class="messages" >
+        {% for message in messages %}
+        <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+<div class="section">
+    <div class="container-login-logout">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3">
+                        <span>Log In </span><span>Sign Up</span>
+                    </h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                    <label for="reg-log"></label>
+                    
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <form method="POST" action="{% url 'login' %}">
+                                        {% csrf_token %}
+                                        <h4 class="mb-4 pb-3">Log In</h4>
+                                        <div class="form-group">
+                                            <input type="text" name="username" class="form-style" placeholder="Your Name"
+                                                id="username" autocomplete="none" />
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="password1" class="form-style"
+                                                placeholder="Your Password" id="password1" autocomplete="none" />
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn mt-4">
+                                            submit
+                                        </button>
+                                        <p class="mb-0 mt-4 text-center">
+                                            <a href="{% url 'password_reset' %}" class="link">Forgot your password?</a>
+                                        </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <form method="POST" action="{% url 'register' %}">
+                                        {% csrf_token %}
+                                        <h4 class="mb-4 pb-3">Sign Up</h4>
+                                        <div class="form-group">
+                                            <input type="text" name="username" class="form-style"
+                                                placeholder="Your Name" id="username" autocomplete="none" />
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="email" name="email" class="form-style" placeholder="Your Email"
+                                                id="email" autocomplete="none" />
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="password1" class="form-style"
+                                                placeholder="Your Password" id="password1" autocomplete="none" />
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="password2" class="form-style"
+                                                placeholder="Confirm Password" id="password2" autocomplete="none" />
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <button type="submit" class="btn mt-4">submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center"><b>Sign In</b></h5>
+                    <form class="form-signin" method="POST">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <br />
+                            {{ form|crispy }}
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                                Login</button><br /><br />
+                            <a class="btn btn-lg btn-warning btn-block text-uppercase"
+                                href="{% url 'password_reset' %}">Forgot Password?</a>
+                        </div>
+                        <small>
+                            <p class="text-center">
+                                Not registered yet!
+                                <a href="{% url 'register' %}"><b>Register Now!</b></a>
+                            </p>
+                        </small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock content %}
+{% block jsfiles %}{% endblock jsfiles %}

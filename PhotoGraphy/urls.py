@@ -41,8 +41,8 @@ urlpatterns = [
     # It is used to search friends
     path('search_users/', user_views.search_users, name='search_users'),
     # Below all are used for authentication and authorization factors
-    path('register/', user_views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('register/', user_views.register_user, name='register'),
+    path('login/', user_views.login_user, name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     
     path('password-reset/', 

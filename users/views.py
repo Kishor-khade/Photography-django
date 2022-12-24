@@ -4,6 +4,7 @@ from feed.models import Post
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from .models import Profile
@@ -33,20 +34,31 @@ def profile_view(request, slug):
     return render(request, "users/profile.html", context)
 
 
-def register(request):
+def register_user(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(
-                request, f'Your account has been created! You can now login!')
+                request, f'Account for user named {username} has been created successfully! \n You can now login!')
+            return redirect('home')
+    return render(request, 'users/login_or_register.html')
+
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password1']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.success(request, "Details Invalid, Please! Enter it again properly")
             return redirect('login')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
-
-
+    return render(request, 'users/login_or_register.html')
+    
 @login_required
 def edit_profile(request):
     if request.method == 'POST':

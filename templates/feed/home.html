@@ -16,6 +16,13 @@
     <div class="row">
 
         <div class="col-md-8">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% for post in posts %}
             <div class="card card-signin my-5">
                 <div class="card-body">
@@ -101,7 +108,7 @@
                     $('#likebtn' + id).css("color", "green")
                     const Count_tag = document.getElementById("likebtn_count" + id);
                     text = Count_tag.textContent;
-                    $('#likebtn_count'+id).html(Number(text)-1);
+                    $('#likebtn_count' + id).html(Number(text) - 1);
                     // Count_tag.innerHTML = Number(text)-1;
                 }
             }
