@@ -13,16 +13,19 @@ import json
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-
+import random
 class PostListView(ListView):
     model = Post
     template_name = 'feed/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 10
-
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
+        items = list(Post.objects.all())
+        # change 4 to how many random items you want
+        random_items = random.sample(items, 6)
+        context['carousel_item'] = random_items
         if self.request.user.is_authenticated:
             liked = [i for i in Post.objects.all() if Like.objects.filter(
                 user=self.request.user, post=i)]

@@ -1,8 +1,28 @@
 {% extends "feed/layout.html" %}
 {% load static %}
 
+
+
 {% block cssfiles %}
+<link rel="stylesheet" type="text/css" href="{%static 'css/carousel_3d_layout.css' %}" />
+<style>
+    .carousel-container {
+        background-color: black;
+    }
+
+    div.carousel-item>img {
+        height: 500px;
+    }
+
+    .center-carousel {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
 {% endblock cssfiles %}
+
+
 
 {% block searchform %}
 <form class="form-inline my-2 my-lg-0 ml-5" action="{% url 'search_posts' %}" method="get">
@@ -11,53 +31,116 @@
 </form>
 {% endblock searchform %}
 
-{% block content %}
-<div class="container">
-    <div class="row">
 
-        <div class="col-md-8">
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% for post in posts %}
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <a href="{{ post.user_name.profile.get_absolute_url }}"><img
-                            src="{{ post.user_name.profile.image.url }}" class="rounded-circle" width="30" height="30"
-                            alt=""></a>
-                    <a class="text-dark"
-                        href="{{ post.user_name.profile.get_absolute_url }}"><b>{{ post.user_name }}</b></a>
-                    <br><small class="text-muted">Posted on {{ post.date_posted }}</small>
-                    <br><br>
-                    <p class="card-text text-dark">{{ post.description }}</p>
-                </div>
-                <a href="{% url 'post-detail' post.id %}"><img class="card-img-top" src="{{ post.pic.url }}" alt=""></a>
-                {% if post.tags %}
-                <br>
-                <p class="text-danger ml-3"><b>Tags: <i>{{ post.tags }}</i></b></p>
-                {% endif %}
-                <div class="card-footer">
-                    <button class="btn btn-white mr-3 like" id="{{ post.id }}">
-                        {% if post in liked_post %}
-                        <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}">Unlike</a>|
-                        <p style="padding-top: 1em;" id="likebtn_count{{ post.id }}">{{post.likes.count}}</p>
-                        {% else %}
-                        <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}">Like</a>|
-                        <p style="padding-top: 1em;" id="likebtn_count{{ post.id }}">{{post.likes.count}}</p>
-                        {% endif %}
-                    </button>
-                    <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}">Comments |
-                        {{ post.details.count }}</a>
-                </div>
+
+{% block content %}
+
+<!-- class for below div if we want card in left col "col-md-8" -->
+<div class="row">
+    {% if messages %}
+    <ul class="messages">
+        <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% for message in messages %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+
+<!-- carousel section start -->
+<div class="" style="height:100vhy">
+    <div id="carouselExampleIndicators" class="carousel-container carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="2000">
+                <img src="{{ carousel_item.5.pic.url }}" class="center-carousel" alt="...">
             </div>
-            {% endfor %}
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="{{ carousel_item.1.pic.url }}" class="center-carousel" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="{{ carousel_item.2.pic.url }}" class="center-carousel" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="{{ carousel_item.3.pic.url }}" class="center-carousel" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="carousel-3d-container" style="margin-bottom: 500px;">
+        <div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.0.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.1.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.2.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.3.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.4.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.5.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.5.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.5.pic.url }}')"></div>
+            <div class="carousel__face" style="background-image: url('{{ carousel_item.5.pic.url }}')"></div>
         </div>
     </div>
 </div>
+
+<div class="container">
+    {% for post in posts %}
+
+    <div class="card card-signin my-5 row">
+        <div class="card-body">
+            <a href="{{ post.user_name.profile.get_absolute_url }}"><img src="{{ post.user_name.profile.image.url }}"
+                    class="rounded-circle" width="30" height="30" alt=""></a>
+            <a class="text-dark" href="{{ post.user_name.profile.get_absolute_url }}"><b>{{ post.user_name }}</b></a>
+            <br><small class="text-muted">Posted on {{ post.date_posted }}</small>
+            <br><br>
+            <p class="card-text text-dark">{{ post.description }}</p>
+        </div>
+        <a href="{% url 'post-detail' post.id %}"><img class="card-img-top" src="{{ post.pic.url }}" alt=""></a>
+        {% if post.tags %}
+        <br>
+        <p class="text-danger ml-3"><b>Tags: <i>{{ post.tags }}</i></b></p>
+        {% endif %}
+        <div class="card-footer" style="display:flex; flex-direction: row;">
+            <button class="btn btn-white mr-3 like" style="display:flex; flex-direction: row;" id="{{ post.id }}">
+                {% if post in liked_post %}
+                <a href="{% url 'post-like' %}" style="color:red;" id="likebtn{{ post.id }}">Unlike</a>|
+                <p style="margin-bottom: 0px;" id="likebtn_count{{ post.id }}">{{post.likes.count}}</p>
+                {% else %}
+                <a href="{% url 'post-like' %}" style="color:green;" id="likebtn{{ post.id }}">Like</a>|
+                <p style="margin-bottom: 0px;" id="likebtn_count{{ post.id }}">{{post.likes.count}}</p>
+                {% endif %}
+            </button>
+            <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}">Comments |
+                {{ post.details.count }}</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 
 {% if is_paginated %}
 
@@ -116,4 +199,5 @@
     });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock jsfiles %}
